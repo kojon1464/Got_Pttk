@@ -26,6 +26,13 @@ public class User {
 	private boolean isEnabled;
 
 	public User() {}
+	
+	public User(String email, String password, boolean isEnabled) {
+		super();
+		this.email = email;
+		this.password = password;
+		this.isEnabled = isEnabled;
+	}
 
 	public String getEmail() {
 		return email;

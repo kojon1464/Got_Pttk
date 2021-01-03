@@ -30,4 +30,9 @@ public class RouteController {
 								.map(r -> new RouteDTO(r, routeStateService.getCurrentState(r)))
 								.collect(Collectors.toList()));
 	}
+	
+	@GetMapping("/matching-routes")
+	private ResponseEntity<List<Route>> routesMatching(long id) throws Exception {
+		return ResponseEntity.ok(routeRepository.findByStartIdOrEndId(id, id));
+	}
 }

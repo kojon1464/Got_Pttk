@@ -27,13 +27,30 @@ public class RouteStateService {
 	
 	public RouteState getCurrentState(Route route) {	
 		Date now = new Date(System.currentTimeMillis());
-		
+		return getStateForDate(route, now);
+	}
+	
+	public RouteState getStateForDate(Route route, Date date) {
 		for (RouteState state : route.getRouteStates()) {
-			if(state.getStart().before(now) && (state.getEnd() == null || state.getEnd().after(now)))
+			if(state.getStart().before(new Date(date.getTime() + 1)) && (state.getEnd() == null || state.getEnd().after(new Date(date.getTime() - 1))))
 					return state;
 		}
 		
 		return null;
+	}
+	
+	public List<Route> filterOpenFromLocalization(List<Route> routes, long localiztion_id, Date date) {
+		for(int i = 0; i < routes.size(); i++) {
+			Route route = routes.get(i);
+			RouteState state = getStateForDate(route, date);
+			
+			int points = localiztion_id != route.getStart().getId()? state.getPointsBack(): state.getPointsThere();
+			
+			if(!state.isOpen() || points < 0) {
+				routes.remove(i);
+			}
+		}
+		return routes;
 	}
 	
 	public List<RouteStateChanged> getRequriedChanges(Route route, Date start, Date end, long state_id){
@@ -100,9 +117,11 @@ public class RouteStateService {
 	}
 	
 	public boolean validate(RouteState state) {
-		if(state.getStart().after(state.getEnd()) ||
-				(state.getPointsThere() <= 0 && state.getPointsBack() <= 0) ||
-				state.getRoute() == null)
+		if(	state.getStart() == null || 
+			state.getEnd() == null ||
+			state.getStart().after(state.getEnd()) ||
+			(state.getPointsThere() <= 0 && state.getPointsBack() <= 0) ||
+			state.getRoute() == null)
 			return false;
 		
 		return true;

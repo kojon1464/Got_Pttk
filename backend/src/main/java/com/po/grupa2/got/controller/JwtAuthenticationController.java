@@ -1,6 +1,5 @@
 package com.po.grupa2.got.controller;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,6 @@ import com.po.grupa2.got.dto.UserDTO;
 import com.po.grupa2.got.model.ConfirmationToken;
 import com.po.grupa2.got.model.User;
 import com.po.grupa2.got.service.ConfirmationService;
-import com.po.grupa2.got.service.EmailSenderService;
 import com.po.grupa2.got.service.MyUserDetailsService;
 
 

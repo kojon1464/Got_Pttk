@@ -58,19 +58,9 @@ public class TripController {
 		trip.setUser(user);
 
 		trip = tripRepository.save(trip);
+		List<TripSegment> segments = prepareSegmentsList(tripDTO);
 
-		List<TripSegment> segments = tripDTO.getSegments();
-
-		for (int i = 0; i < segments.size(); i++) {
-			TripSegment segment = segments.get(i);
-
-			segment.setTrip(trip);
-			segment.setRoute(routeRepository.findById(segment.getRoute().getId()).get());
-			segment.setId(new TripSegmentKey(trip.getId(), segment.getRoute().getId()));
-			segment.setOrderNumber(i);
-		}
-
-		ErrorDTO validation = tripService.validateTripAndSegments(trip, tripDTO.getSegments());
+		ErrorDTO validation = tripService.validateTripAndSegments(trip, segments);
 
 		if (validation != null) {
 			tripRepository.delete(trip);
@@ -89,22 +79,26 @@ public class TripController {
 		int points = 0;
 
 		try {
-			List<TripSegment> segments = tripDTO.getSegments();
-
-			for (int i = 0; i < segments.size(); i++) {
-				TripSegment segment = segments.get(i);
-
-				segment.setTrip(tripDTO.getTrip());
-				segment.setRoute(routeRepository.findById(segment.getRoute().getId()).get());
-				segment.setId(new TripSegmentKey(tripDTO.getTrip().getId(), segment.getRoute().getId()));
-				segment.setOrderNumber(i);
-			}
-
-			points = tripService.calculatePointsForTrip(tripDTO.getTrip(), segments);
+			points = tripService.calculatePointsForTrip(tripDTO.getTrip(), prepareSegmentsList(tripDTO));
 		} catch (Exception e) {
 
 		}
 
 		return ResponseEntity.ok(points);
+	}
+	
+	private List<TripSegment> prepareSegmentsList(TripDTO tripDTO) {
+		List<TripSegment> segments = tripDTO.getSegments();
+
+		for (int i = 0; i < segments.size(); i++) {
+			TripSegment segment = segments.get(i);
+
+			segment.setTrip(tripDTO.getTrip());
+			segment.setRoute(routeRepository.findById(segment.getRoute().getId()).get());
+			segment.setId(new TripSegmentKey(tripDTO.getTrip().getId(), segment.getRoute().getId()));
+			segment.setOrderNumber(i);
+		}
+		
+		return segments;
 	}
 }

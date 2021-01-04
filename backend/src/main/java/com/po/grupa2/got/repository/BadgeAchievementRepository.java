@@ -7,10 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import com.po.grupa2.got.model.BadgeAchievement;
 import com.po.grupa2.got.model.BadgeArchievmentKey;
+import com.po.grupa2.got.model.BadgeRank;
 import com.po.grupa2.got.model.User;
 
 @Repository
 public interface BadgeAchievementRepository extends JpaRepository<BadgeAchievement, BadgeArchievmentKey> {
 	
 	public List<BadgeAchievement> findByUserOrderByDate(User user);
+	public BadgeAchievement findByUserAndBadgeRank(User user, BadgeRank rank);
 }

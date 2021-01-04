@@ -106,20 +106,20 @@ public class GotPttkApiApplication implements CommandLineRunner {
 		badgeRepository.save(badge1);
 		badgeRepository.save(badge2);
 		
-		BadgeRank rank1 = new BadgeRank(Rank.SILVER, "silver", 10, true, badge1);
-		BadgeRank rank2 = new BadgeRank(Rank.GOLD, "Gold", 20, true, badge1);
-		BadgeRank rank3 = new BadgeRank(Rank.SILVER, "silver", 5, true, badge2);
+		BadgeRank rank1 = new BadgeRank(Rank.SILVER, "silver", 0, true, badge1);
+		BadgeRank rank2 = new BadgeRank(Rank.GOLD, "Gold", 0, true, badge1);
+		BadgeRank rank3 = new BadgeRank(Rank.SILVER, "silver", 0, true, badge2);
 		
 		badgeRankRepository.save(rank1);
 		badgeRankRepository.save(rank2);
 		badgeRankRepository.save(rank3);
 		
-		badgeAchievementRepository.save(new BadgeAchievement(rank1, user1, new GregorianCalendar(2020, Calendar.DECEMBER, 12).getTime()));
-		badgeAchievementRepository.save(new BadgeAchievement(rank1, user, new GregorianCalendar(2020, Calendar.DECEMBER, 12).getTime()));
+		badgeAchievementRepository.save(new BadgeAchievement(rank2, user1, new GregorianCalendar(2020, Calendar.DECEMBER, 12).getTime()));
+		badgeAchievementRepository.save(new BadgeAchievement(rank2, user, new GregorianCalendar(2020, Calendar.DECEMBER, 12).getTime()));
 		
-		badgeApplicationRepository.save(new BadgeApplication(new GregorianCalendar(2020, Calendar.DECEMBER, 12).getTime(), false, false, rank1, user));
-		badgeApplicationRepository.save(new BadgeApplication(new GregorianCalendar(2021, Calendar.DECEMBER, 12).getTime(), false, false, rank1, user));
-		badgeApplicationRepository.save(new BadgeApplication(new GregorianCalendar(2022, Calendar.DECEMBER, 12).getTime(), false, false, rank1, user1));
+		badgeApplicationRepository.save(new BadgeApplication(new GregorianCalendar(2020, Calendar.DECEMBER, 12).getTime(), true, true, rank1, user));
+		badgeApplicationRepository.save(new BadgeApplication(new GregorianCalendar(2021, Calendar.DECEMBER, 12).getTime(), true, true, rank1, user));
+		badgeApplicationRepository.save(new BadgeApplication(new GregorianCalendar(2022, Calendar.DECEMBER, 12).getTime(), true, true, rank1, user1));
 	}
 
 }

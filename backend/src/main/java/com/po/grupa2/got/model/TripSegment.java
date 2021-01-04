@@ -27,10 +27,11 @@ public class TripSegment {
 	private int orderNumber;
 
 	public TripSegment() {
+		this.id = new TripSegmentKey();
 	}
 
 	public TripSegment(Trip trip, Route route, int orderNumber) {
-		super();
+		this.id = new TripSegmentKey();
 		this.trip = trip;
 		this.route = route;
 		this.orderNumber = orderNumber;

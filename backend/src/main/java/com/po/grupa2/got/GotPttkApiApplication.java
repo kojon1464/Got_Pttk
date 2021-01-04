@@ -9,11 +9,22 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.po.grupa2.got.model.Badge;
+import com.po.grupa2.got.model.Badge.Kind;
+import com.po.grupa2.got.model.BadgeAchievement;
+import com.po.grupa2.got.model.BadgeApplication;
+import com.po.grupa2.got.model.BadgeArchievmentKey;
+import com.po.grupa2.got.model.BadgeRank;
+import com.po.grupa2.got.model.BadgeRank.Rank;
 import com.po.grupa2.got.model.Localization;
 import com.po.grupa2.got.model.Route;
 import com.po.grupa2.got.model.RouteState;
 import com.po.grupa2.got.model.Trip;
 import com.po.grupa2.got.model.User;
+import com.po.grupa2.got.repository.BadgeAchievementRepository;
+import com.po.grupa2.got.repository.BadgeApplicationRepository;
+import com.po.grupa2.got.repository.BadgeRankRepository;
+import com.po.grupa2.got.repository.BadgeRepository;
 import com.po.grupa2.got.repository.LocalizationRepository;
 import com.po.grupa2.got.repository.RouteRepository;
 import com.po.grupa2.got.repository.RouteStateRepository;
@@ -44,6 +55,18 @@ public class GotPttkApiApplication implements CommandLineRunner {
 	
 	@Autowired
 	private TripRepository tripRepository;
+	
+	@Autowired
+	private BadgeRankRepository badgeRankRepository;
+	
+	@Autowired
+	private BadgeRepository badgeRepository;
+	
+	@Autowired
+	private BadgeAchievementRepository badgeAchievementRepository;
+	
+	@Autowired
+	private BadgeApplicationRepository badgeApplicationRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -75,6 +98,28 @@ public class GotPttkApiApplication implements CommandLineRunner {
 		Trip trip = new Trip(new GregorianCalendar(2020, Calendar.FEBRUARY, 11).getTime(), "Pierwsza", "", false, lokalizationBoj, user);
 		
 		tripRepository.save(trip);
+		
+		
+		Badge badge1 = new Badge(Kind.GREAT, "Great");
+		Badge badge2 = new Badge(Kind.SMALL, "Small");
+		
+		badgeRepository.save(badge1);
+		badgeRepository.save(badge2);
+		
+		BadgeRank rank1 = new BadgeRank(Rank.SILVER, "silver", 10, true, badge1);
+		BadgeRank rank2 = new BadgeRank(Rank.GOLD, "Gold", 20, true, badge1);
+		BadgeRank rank3 = new BadgeRank(Rank.SILVER, "silver", 5, true, badge2);
+		
+		badgeRankRepository.save(rank1);
+		badgeRankRepository.save(rank2);
+		badgeRankRepository.save(rank3);
+		
+		badgeAchievementRepository.save(new BadgeAchievement(rank1, user1, new GregorianCalendar(2020, Calendar.DECEMBER, 12).getTime()));
+		badgeAchievementRepository.save(new BadgeAchievement(rank1, user, new GregorianCalendar(2020, Calendar.DECEMBER, 12).getTime()));
+		
+		badgeApplicationRepository.save(new BadgeApplication(new GregorianCalendar(2020, Calendar.DECEMBER, 12).getTime(), false, false, rank1, user));
+		badgeApplicationRepository.save(new BadgeApplication(new GregorianCalendar(2021, Calendar.DECEMBER, 12).getTime(), false, false, rank1, user));
+		badgeApplicationRepository.save(new BadgeApplication(new GregorianCalendar(2022, Calendar.DECEMBER, 12).getTime(), false, false, rank1, user1));
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.po.grupa2.got.service;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -13,12 +14,17 @@ import com.po.grupa2.got.model.RouteState;
 import com.po.grupa2.got.model.Trip;
 import com.po.grupa2.got.model.TripSegment;
 import com.po.grupa2.got.model.TripSegmentKey;
+import com.po.grupa2.got.model.User;
+import com.po.grupa2.got.repository.TripRepository;
 
 @Service
 public class TripService {
 
 	@Autowired
 	private RouteStateService routeStateService;
+	
+	@Autowired
+	private TripRepository tripRepository;
 	
 	private boolean validateTrip(Trip trip) {
 		
@@ -71,9 +77,29 @@ public class TripService {
 		return null;
 	}
 	
-	public int calculatePointsForTrip(Trip trip, List<TripSegment> segments) {
+	public int calculatePointsForAllTrips(User user) {
+		return calculatePointForTrips(tripRepository.findByUser(user));
+	}
+	
+	public int calculatePointsForTripsAfter(Date date, User user) {
+		return calculatePointForTrips(tripRepository.findByUserAndDateAfter(user, date));
+	}
+	
+	public int calculatePointsForTripsBetween(Date start, Date end, User user) {
+		return calculatePointForTrips(tripRepository.findByUserAndDateBetween(user, start, end));
+	}
+	
+	public int calculatePointForTrips(List<Trip> trips) {
 		int sum = 0;
 		HashSet<RoutePass> hashset = new HashSet<>();
+		for (Trip trip : trips) {
+			sum += calculatePointsForTrip(trip, hashset);
+		}
+		return sum;
+	}
+	
+	public int calculatePointsForTrip(Trip trip, List<TripSegment> segments, HashSet<RoutePass> hashset) {
+		int sum = 0;
 		Localization lastLocalization = trip.getStart();
 		
 		for (TripSegment tripSegment : segments) {
@@ -100,8 +126,17 @@ public class TripService {
 		return sum;
 	}
 	
+	public int calculatePointsForTrip(Trip trip, List<TripSegment> segments) {
+		HashSet<RoutePass> hashset = new HashSet<>();
+		return calculatePointsForTrip(trip, segments, hashset);
+	}
+	
 	public int calculatePointsForTrip(Trip trip) {
 		return calculatePointsForTrip(trip, trip.getSegments());
+	}
+	
+	private int calculatePointsForTrip(Trip trip, HashSet<RoutePass> hashset) {
+		return calculatePointsForTrip(trip, trip.getSegments(), hashset);
 	}
 	
 	private static enum Direction {

@@ -1,10 +1,7 @@
 import {BACKEND_URL} from "../config";
 import defAxios from "axios";
 
-const getAuthToken = () => {
-  const auth = localStorage.getItem("auth");
-  return auth ? JSON.parse(auth).token : "";
-};
+const getAuthToken = () => localStorage.getItem("auth") || "";
 
 export const authHeader = () => ({
   headers: {

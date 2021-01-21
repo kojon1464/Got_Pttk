@@ -12,14 +12,14 @@ const ManageContainer = ({children}) => {
         <Button className={classes.linkButton} fullWidth>
           Zarządzanie lokacjami
         </Button>
-        <Button className={classes.linkButton} fullWidth>
+        <Button color="primary" className={classes.linkButton} fullWidth>
           Zarządzanie odcinkami
         </Button>
         <Button className={classes.linkButton} fullWidth>
           Zarządzanie odznakami
         </Button>
-        <Button color="primary" className={classes.linkButton} fullWidth>
-          Mod. grup i terenów górskich
+        <Button className={classes.linkButton} fullWidth>
+          Mod. terenów górskich
         </Button>
         <Button className={classes.linkButton} fullWidth>
           Usuwanie użytkowników
@@ -42,7 +42,7 @@ const useStyles = makeStyles({
   },
 
   menuContainer: {
-    width: 300,
+    width: 270,
     marginRight: 8
   },
 

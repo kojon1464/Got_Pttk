@@ -1,9 +1,9 @@
 import {Button, TextField, Typography} from "@material-ui/core";
 import AuthContainer from "../../components/AuthContainer";
 import {makeStyles} from "@material-ui/core/styles";
-import * as authApi from "../../api/auth";
 import {Link} from "react-router-dom";
 import React, {useState} from "react";
+import * as api from "../../api";
 
 const Login = ({onLoginSuccess}) => {
   const classes = useStyles();
@@ -13,7 +13,7 @@ const Login = ({onLoginSuccess}) => {
   const [isError, setIsError] = useState(false);
 
   const handleLoginSubmit = () =>
-    authApi
+    api
       .login(email, password)
       .then(response => {
         localStorage.setItem("auth", response.data.token);

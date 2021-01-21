@@ -1,4 +1,5 @@
 import ManageContainer from "../../components/ManageContainer";
+import RouteDescription from "./RouteDescription";
 import React, {useState, useEffect} from "react";
 import RoutesTable from "./RoutesTable";
 import * as api from "../../api";
@@ -9,9 +10,19 @@ const Manage = () => {
     api.getRoutes().then(res => setRoutes(res.data));
   }, []);
 
+  const [modifiedRoute, setModifiedRoute] = useState(null);
+
   return (
     <ManageContainer>
-      <RoutesTable routes={routes} onModifyRequest={() => true} />
+      {!modifiedRoute && (
+        <RoutesTable routes={routes} onModifyRequest={setModifiedRoute} />
+      )}
+      {modifiedRoute && (
+        <RouteDescription
+          route={modifiedRoute}
+          onCancelRequest={() => setModifiedRoute(null)}
+        />
+      )}
     </ManageContainer>
   );
 };

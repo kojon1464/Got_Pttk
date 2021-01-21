@@ -8,4 +8,4 @@ export const login = (email, password) =>
 
 export const logout = () => localStorage.setItem("auth", null);
 
-export const getRoutes = () => axios.post("/routes", authHeader());
+export const getRoutes = () => axios.get("/routes", authHeader());

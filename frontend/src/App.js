@@ -1,25 +1,41 @@
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import Register from "./screens/Register/Register";
+import React, {useState, useEffect} from "react";
 import Manage from "./screens/Manage/Manage";
 import Login from "./screens/Login/Login";
-import React from "react";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Switch,
+  Route
+} from "react-router-dom";
 
 function App() {
   const classes = useStyles();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem("auth")) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <Router>
       <div className={classes.root}>
         <Switch>
           <Route path="/manage">
-            <Manage />
+            {isLoggedIn ? <Manage /> : <Redirect to="/login" />}
           </Route>
           <Route path="/register">
-            <Register />
+            {!isLoggedIn ? <Register /> : <Redirect to="/manage" />}
           </Route>
           <Route path="/">
-            <Login />
+            {!isLoggedIn ? (
+              <Login onLoginSuccess={() => setIsLoggedIn(true)} />
+            ) : (
+              <Redirect to="/manage" />
+            )}
           </Route>
         </Switch>
       </div>

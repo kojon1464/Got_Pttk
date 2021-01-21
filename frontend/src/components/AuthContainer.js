@@ -1,9 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import WorldImg from "../assets/world.png";
-import {Button, Paper, TextField} from "@material-ui/core";
-import {Link} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
+import WorldImg from "../assets/world.png";
+import {Paper} from "@material-ui/core";
+import React from "react";
 
 const AuthContainer = ({title, caption, children}) => {
   const classes = useStyles();
@@ -22,8 +20,6 @@ const AuthContainer = ({title, caption, children}) => {
     </div>
   );
 };
-
-AuthContainer.propTypes = {};
 
 const useStyles = makeStyles({
   root: {

@@ -8,6 +8,17 @@ import TableRow from "@material-ui/core/TableRow";
 import React, {useState, useEffect} from "react";
 import Table from "@material-ui/core/Table";
 import * as api from "../../api";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider
+} from "@material-ui/pickers";
 
 const RouteDescription = ({route, onCancelRequest}) => {
   const classes = useStyles();
@@ -25,6 +36,14 @@ const RouteDescription = ({route, onCancelRequest}) => {
       setSelectedState(null);
     }
   }, [route]);
+
+  const [isStateEditorDialog, setIsStateEditorDialog] = useState(false);
+  const closeStateEditorDialog = () => {
+    setIsStateEditorDialog(false);
+    setSelectedState(null);
+  };
+
+  const [startDate, setStartDate] = useState(new Date());
 
   if (!route) return null;
 
@@ -68,12 +87,70 @@ const RouteDescription = ({route, onCancelRequest}) => {
       </TableContainer>
 
       <div className={classes.actionButtons}>
-        <Button onClick={() => true}>Dodaj nowy stan</Button>
-        <Button onClick={() => true} disabled={!selectedState}>
+        <Button
+          onClick={() => {
+            setIsStateEditorDialog(true);
+            setSelectedState(null);
+          }}
+        >
+          Dodaj nowy stan
+        </Button>
+        <Button
+          onClick={() => setIsStateEditorDialog(true)}
+          disabled={!selectedState}
+        >
           Zmień wybrany
         </Button>
         <Button onClick={onCancelRequest}>Anuluj</Button>
       </div>
+
+      <Dialog
+        open={isStateEditorDialog}
+        onClose={closeStateEditorDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle>Wprowadź modyfikację stanu</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <div>
+              <Typography>Data rozpoczęcia:</Typography>
+              <Typography>Data zakończenia:</Typography>
+              <Typography>Punkty tam:</Typography>
+              <Typography>Punkty powrót:</Typography>
+              <Typography>Otwarty:</Typography>
+            </div>
+            <div>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  value={startDate}
+                  onChange={setStartDate}
+                />
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  value={startDate}
+                  onChange={setStartDate}
+                />
+              </MuiPickersUtilsProvider>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeStateEditorDialog} color="primary">
+            Zmień
+          </Button>
+          <Button onClick={closeStateEditorDialog} color="primary" autoFocus>
+            Anuluj
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

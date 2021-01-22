@@ -13,5 +13,8 @@ export const getRoutes = () => axios.get("/routes", authHeader());
 export const getRouteStates = routeId =>
   axios.get("/states", {params: {route_id: routeId}, ...authHeader()});
 
-export const changeStates = states =>
-  axios.post("/state-change", states, authHeader());
+export const changeStates = state =>
+  axios.post("/state-change", state, authHeader());
+
+export const confirmStates = state =>
+  axios.post("/confirm-change", state, authHeader());

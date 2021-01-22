@@ -37,8 +37,12 @@ const RouteDescription = ({route, onCancelRequest}) => {
     }
   }, [route]);
 
+  const [changesResData, setChangesResData] = useState(null);
+  const [stateToConfirm, setStateToConfirm] = useState(null);
+
   const [isStateEditorDialog, setIsStateEditorDialog] = useState(false);
   const [isErrorDialog, setIsErrorDialog] = useState(false);
+  const [isConfirmationDialog, setIsConfirmationDialog] = useState(false);
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -73,18 +77,34 @@ const RouteDescription = ({route, onCancelRequest}) => {
   const handleStateChangesSave = state => {
     return api
       .changeStates(state)
-      .then(onCancelRequest)
+      .then(response => {
+        setChangesResData(response.data);
+        setIsConfirmationDialog(true);
+      })
       .catch(() => setIsErrorDialog(true));
   };
-  const confirmStateEdit = () => {
-    selectedState.start = mapDateToString(startDate);
-    selectedState.end = mapDateToString(endDate);
-    selectedState.pointsThere = pointsThere;
-    selectedState.pointsBack = pointsBack;
-    selectedState.open = isOpened;
+  const handleConfirmationSubmit = () => {
+    return api.confirmStates(stateToConfirm).then(response => {
+      setRouteStates(response.data);
+      setIsConfirmationDialog(false);
+      setChangesResData(null);
+      setStateToConfirm(null);
+      setSelectedState(null);
+    });
+  };
 
-    setRouteStates([...routeStates]);
-    handleStateChangesSave(selectedState).then(closeStateEditorDialog);
+  const confirmStateEdit = () => {
+    const newState = {
+      ...selectedState,
+      start: mapDateToString(startDate),
+      end: mapDateToString(endDate),
+      pointsThere,
+      pointsBack,
+      open: isOpened
+    };
+
+    setStateToConfirm(newState);
+    handleStateChangesSave(newState).then(closeStateEditorDialog);
   };
 
   const confirmStateCreate = () => {
@@ -98,7 +118,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
       route
     };
 
-    setRouteStates(states => [...states, newState]);
+    setStateToConfirm(newState);
     handleStateChangesSave(newState).then(closeStateEditorDialog);
   };
 
@@ -111,8 +131,8 @@ const RouteDescription = ({route, onCancelRequest}) => {
       style={{cursor: "pointer"}}
       onClick={() => setSelectedState(state)}
     >
-      <TableCell>{state.start}</TableCell>
-      <TableCell>{state.end}</TableCell>
+      <TableCell>{state.start.substring(0, 10)}</TableCell>
+      <TableCell>{state.end.substring(0, 10)}</TableCell>
       <TableCell>{state.pointsThere}</TableCell>
       <TableCell>{state.pointsBack}</TableCell>
       <TableCell>{state.open ? "tak" : "nie"}</TableCell>
@@ -226,12 +246,56 @@ const RouteDescription = ({route, onCancelRequest}) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Dialog
+        open={isConfirmationDialog}
+        onClose={() => setIsConfirmationDialog(false)}
+      >
+        <DialogTitle>
+          Aby zastosować wprowadzone zmiany, następujące stany musiały zostać
+          zmodyfikowane przez system:
+        </DialogTitle>
+        <DialogContent>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Stan</TableCell>
+                  <TableCell>Modyfikacja</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {changesResData?.map((row, id) => (
+                  <TableRow key={id}>
+                    <TableCell>
+                      od {row.state.start.substring(0, 10)} do{" "}
+                      {row.state.end.substring(0, 10)} Punkty(
+                      {row.state.pointsThere}/{row.state.pointsBack}){" "}
+                      {row.state.open ? "Otwarty" : "Zamknięty"}
+                    </TableCell>
+                    <TableCell>{row.message}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Typography style={{marginTop: 25, textAlign: "center"}}>
+            Potwierdź czy chcesz zapisać zmiany
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button color="primary" onClick={handleConfirmationSubmit}>
+            Potwierdź
+          </Button>
+          <Button onClick={() => setIsConfirmationDialog(false)}>Anuluj</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
 
 const mapStringToDate = text => {
-  const values = text.split("-").map(Number);
+  const values = text.substring(0, 10).split("-").map(Number);
   return new Date(values[0], values[1] - 1, values[2]);
 };
 

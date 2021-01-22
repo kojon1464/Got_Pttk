@@ -69,6 +69,32 @@ const RouteDescription = ({route, onCancelRequest}) => {
     setIsOpened(true);
   };
 
+  const confirmStateEdit = () => {
+    selectedState.start = mapDateToString(startDate);
+    selectedState.end = mapDateToString(endDate);
+    selectedState.pointsThere = pointsThere;
+    selectedState.pointsBack = pointsBack;
+    selectedState.open = isOpened;
+
+    setRouteStates([...routeStates]);
+    closeStateEditorDialog();
+  };
+
+  const confirmStateCreate = () => {
+    const newState = {
+      id: 0,
+      start: mapDateToString(startDate),
+      end: mapDateToString(endDate),
+      pointsThere,
+      pointsBack,
+      open: isOpened,
+      route
+    };
+
+    setRouteStates(states => [...states, newState]);
+    closeStateEditorDialog();
+  };
+
   if (!route) return null;
 
   const renderedRows = routeStates.map(state => (
@@ -119,7 +145,11 @@ const RouteDescription = ({route, onCancelRequest}) => {
       </div>
 
       <Dialog open={isStateEditorDialog} onClose={closeStateEditorDialog}>
-        <DialogTitle>Wprowadź modyfikację stanu</DialogTitle>
+        <DialogTitle>
+          {selectedState
+            ? "Wprowadź modyfikację stanu"
+            : "Podaj dane nowego stanu"}
+        </DialogTitle>
         <DialogContent className={classes.formContainer}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
@@ -164,8 +194,11 @@ const RouteDescription = ({route, onCancelRequest}) => {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeStateEditorDialog} color="primary">
-            Zmień
+          <Button
+            onClick={selectedState ? confirmStateEdit : confirmStateCreate}
+            color="primary"
+          >
+            {selectedState ? "Zmień" : "Utwórz"}
           </Button>
           <Button onClick={closeStateEditorDialog} color="primary" autoFocus>
             Anuluj

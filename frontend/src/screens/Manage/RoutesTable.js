@@ -1,11 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import {Button} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import ManageContainer from "../../components/ManageContainer";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
@@ -52,7 +50,5 @@ const RoutesTable = ({routes, onModifyRequest}) => {
     </TableContainer>
   );
 };
-
-RoutesTable.propTypes = {};
 
 export default RoutesTable;

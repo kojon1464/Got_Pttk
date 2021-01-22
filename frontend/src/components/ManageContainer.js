@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   root: {
     display: "flex",
     flexDirection: "row",
-    marginTop: 150,
+    marginTop: 80,
     width: "95%"
   },
 

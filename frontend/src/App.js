@@ -9,6 +9,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import NavBar from "./components/NavBar";
 
 function App() {
   const classes = useStyles();
@@ -20,8 +21,14 @@ function App() {
     }
   }, []);
 
+  const logout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem("auth");
+  };
+
   return (
     <Router>
+      {isLoggedIn && <NavBar onLogoutRequest={logout} />}
       <div className={classes.root}>
         <Switch>
           <Route path="/manage">

@@ -1,5 +1,5 @@
 import TableContainer from "@material-ui/core/TableContainer";
-import {Button, Typography} from "@material-ui/core";
+import {Button, Grid, Switch, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
@@ -19,6 +19,7 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
+import TextField from "@material-ui/core/TextField";
 
 const RouteDescription = ({route, onCancelRequest}) => {
   const classes = useStyles();
@@ -104,43 +105,40 @@ const RouteDescription = ({route, onCancelRequest}) => {
         <Button onClick={onCancelRequest}>Anuluj</Button>
       </div>
 
-      <Dialog
-        open={isStateEditorDialog}
-        onClose={closeStateEditorDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
+      <Dialog open={isStateEditorDialog} onClose={closeStateEditorDialog}>
         <DialogTitle>Wprowadź modyfikację stanu</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            <div>
-              <Typography>Data rozpoczęcia:</Typography>
-              <Typography>Data zakończenia:</Typography>
-              <Typography>Punkty tam:</Typography>
-              <Typography>Punkty powrót:</Typography>
-              <Typography>Otwarty:</Typography>
-            </div>
-            <div>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/dd/yyyy"
-                  margin="normal"
-                  value={startDate}
-                  onChange={setStartDate}
-                />
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/dd/yyyy"
-                  margin="normal"
-                  value={startDate}
-                  onChange={setStartDate}
-                />
-              </MuiPickersUtilsProvider>
-            </div>
-          </DialogContentText>
+        <DialogContent className={classes.formContainer}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              label="Data rozpoczęcia"
+              disableToolbar
+              variant="inline"
+              format="yyyy-MM-dd"
+              margin="normal"
+              value={startDate}
+              onChange={setStartDate}
+            />
+          </MuiPickersUtilsProvider>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              label="Data zakończenia"
+              disableToolbar
+              variant="inline"
+              format="yyyy-MM-dd"
+              margin="normal"
+              value={startDate}
+              onChange={setStartDate}
+            />
+          </MuiPickersUtilsProvider>
+          <TextField label="Punkty tam" type="number" />
+          <TextField label="Punkty powrót" type="number" />
+          <div className={classes.switchBox}>
+            <Typography>Otwarty:</Typography>
+            <Switch
+            // checked={state.checkedA}
+            // onChange={handleChange}
+            />
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={closeStateEditorDialog} color="primary">
@@ -165,6 +163,19 @@ const useStyles = makeStyles({
     flexDirection: "row",
     justifyContent: "flex-end",
     marginTop: 20
+  },
+
+  formContainer: {
+    display: "flex",
+    flexDirection: "column",
+    paddingLeft: 150,
+    paddingRight: 150
+  },
+
+  switchBox: {
+    display: "flex",
+    marginTop: 20,
+    alignItems: "center"
   }
 });
 

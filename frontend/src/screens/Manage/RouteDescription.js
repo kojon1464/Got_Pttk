@@ -1,5 +1,5 @@
 import TableContainer from "@material-ui/core/TableContainer";
-import {Button, Grid, Switch, Typography} from "@material-ui/core";
+import {Button, Switch, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
@@ -11,7 +11,6 @@ import * as api from "../../api";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
@@ -45,6 +44,10 @@ const RouteDescription = ({route, onCancelRequest}) => {
   };
 
   const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
+  const [pointsThere, setPointsThere] = useState(null);
+  const [pointsBack, setPointsBack] = useState(null);
+  const [isOpened, setIsOpened] = useState(true);
 
   if (!route) return null;
 
@@ -126,17 +129,27 @@ const RouteDescription = ({route, onCancelRequest}) => {
               variant="inline"
               format="yyyy-MM-dd"
               margin="normal"
-              value={startDate}
-              onChange={setStartDate}
+              value={endDate}
+              onChange={setEndDate}
             />
           </MuiPickersUtilsProvider>
-          <TextField label="Punkty tam" type="number" />
-          <TextField label="Punkty powrót" type="number" />
+          <TextField
+            label="Punkty tam"
+            type="number"
+            value={pointsThere}
+            onChange={event => setPointsThere(event.target.value)}
+          />
+          <TextField
+            label="Punkty powrót"
+            type="number"
+            value={pointsBack}
+            onChange={event => setPointsBack(event.target.value)}
+          />
           <div className={classes.switchBox}>
             <Typography>Otwarty:</Typography>
             <Switch
-            // checked={state.checkedA}
-            // onChange={handleChange}
+              checked={isOpened}
+              onChange={event => setIsOpened(event.target.checked)}
             />
           </div>
         </DialogContent>

@@ -1,5 +1,5 @@
 import TableContainer from "@material-ui/core/TableContainer";
-import {Button, Switch, Typography} from "@material-ui/core";
+import {Button, DialogContentText, Switch, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
@@ -38,6 +38,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
   }, [route]);
 
   const [isStateEditorDialog, setIsStateEditorDialog] = useState(false);
+  const [isErrorDialog, setIsErrorDialog] = useState(false);
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -69,6 +70,12 @@ const RouteDescription = ({route, onCancelRequest}) => {
     setIsOpened(true);
   };
 
+  const handleStateChangesSave = state => {
+    return api
+      .changeStates(state)
+      .then(onCancelRequest)
+      .catch(() => setIsErrorDialog(true));
+  };
   const confirmStateEdit = () => {
     selectedState.start = mapDateToString(startDate);
     selectedState.end = mapDateToString(endDate);
@@ -77,7 +84,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
     selectedState.open = isOpened;
 
     setRouteStates([...routeStates]);
-    closeStateEditorDialog();
+    handleStateChangesSave(selectedState).then(closeStateEditorDialog);
   };
 
   const confirmStateCreate = () => {
@@ -92,7 +99,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
     };
 
     setRouteStates(states => [...states, newState]);
-    closeStateEditorDialog();
+    handleStateChangesSave(newState).then(closeStateEditorDialog);
   };
 
   if (!route) return null;
@@ -100,7 +107,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
   const renderedRows = routeStates.map(state => (
     <TableRow
       key={state.id}
-      className={selectedState === state && classes.selectedStateRow}
+      className={selectedState === state ? classes.selectedStateRow : ""}
       style={{cursor: "pointer"}}
       onClick={() => setSelectedState(state)}
     >
@@ -202,6 +209,20 @@ const RouteDescription = ({route, onCancelRequest}) => {
           </Button>
           <Button onClick={closeStateEditorDialog} color="primary" autoFocus>
             Anuluj
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={isErrorDialog} onClose={() => setIsErrorDialog(false)}>
+        <DialogTitle>Błąd</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Wystąpił błąd podczas przetwarzania zmian
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button color="primary" onClick={() => setIsErrorDialog(false)}>
+            OK
           </Button>
         </DialogActions>
       </Dialog>

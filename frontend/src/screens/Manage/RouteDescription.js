@@ -38,16 +38,36 @@ const RouteDescription = ({route, onCancelRequest}) => {
   }, [route]);
 
   const [isStateEditorDialog, setIsStateEditorDialog] = useState(false);
-  const closeStateEditorDialog = () => {
-    setIsStateEditorDialog(false);
-    setSelectedState(null);
-  };
 
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [pointsThere, setPointsThere] = useState(null);
   const [pointsBack, setPointsBack] = useState(null);
   const [isOpened, setIsOpened] = useState(true);
+
+  const handleStateCreatorOpen = () => {
+    setIsStateEditorDialog(true);
+    setSelectedState(null);
+  };
+  const handleStateEditorOpen = () => {
+    setIsStateEditorDialog(true);
+
+    setStartDate(mapStringToDate(selectedState.start));
+    setEndDate(mapStringToDate(selectedState.end));
+    setPointsThere(selectedState.pointsThere);
+    setPointsBack(selectedState.pointsBack);
+    setIsOpened(selectedState.open);
+  };
+  const closeStateEditorDialog = () => {
+    setIsStateEditorDialog(false);
+    setSelectedState(null);
+
+    setStartDate(null);
+    setEndDate(null);
+    setPointsThere(null);
+    setPointsBack(null);
+    setIsOpened(true);
+  };
 
   if (!route) return null;
 
@@ -91,18 +111,8 @@ const RouteDescription = ({route, onCancelRequest}) => {
       </TableContainer>
 
       <div className={classes.actionButtons}>
-        <Button
-          onClick={() => {
-            setIsStateEditorDialog(true);
-            setSelectedState(null);
-          }}
-        >
-          Dodaj nowy stan
-        </Button>
-        <Button
-          onClick={() => setIsStateEditorDialog(true)}
-          disabled={!selectedState}
-        >
+        <Button onClick={handleStateCreatorOpen}>Dodaj nowy stan</Button>
+        <Button onClick={handleStateEditorOpen} disabled={!selectedState}>
           Zmień wybrany
         </Button>
         <Button onClick={onCancelRequest}>Anuluj</Button>
@@ -164,6 +174,19 @@ const RouteDescription = ({route, onCancelRequest}) => {
       </Dialog>
     </>
   );
+};
+
+const mapStringToDate = text => {
+  const values = text.split("-").map(Number);
+  return new Date(values[0], values[1] - 1, values[2]);
+};
+
+const mapDateToString = date => {
+  const fixedMonth =
+    date.getMonth() < 10 ? `0${date.getMonth()}` : `${date.getMonth()}`;
+  const fixedDate =
+    date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`;
+  return `${date.getFullYear()}-${fixedMonth}-${fixedDate}`;
 };
 
 const useStyles = makeStyles({

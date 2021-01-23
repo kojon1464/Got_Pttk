@@ -3,7 +3,7 @@ import * as api from "../../api";
 import {Grid, Container} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import BadgeCard from "./BadgeCard";
-import BadgeDescription from "./BadgeDescription";
+import BadgeDescription from "./BadgeDescription/BadgeDescription";
 
 const Badges = () => {
   const classes = useStyles();

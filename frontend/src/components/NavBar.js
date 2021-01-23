@@ -13,7 +13,7 @@ const NavBar = ({onLogoutRequest}) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="white">
+      <AppBar position="static" color="transparent">
         <Toolbar>
           <img className={classes.logoImg} src={WorldImg} />
           <Typography variant="h6" className={classes.title}>

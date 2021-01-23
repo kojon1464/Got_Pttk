@@ -10,15 +10,18 @@ import {
   Route
 } from "react-router-dom";
 import NavBar from "./components/NavBar";
+import Badges from "./screens/Badges/Badges";
 
 function App() {
   const classes = useStyles();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     if (localStorage.getItem("auth")) {
       setIsLoggedIn(true);
     }
+    setIsLoading(false);
   }, []);
 
   const logout = () => {
@@ -28,17 +31,24 @@ function App() {
 
   return (
     <Router>
-      {isLoggedIn && <NavBar onLogoutRequest={logout} />}
+      {(isLoggedIn || isLoading) && <NavBar onLogoutRequest={logout} />}
       <div className={classes.root}>
         <Switch>
           <Route path="/manage">
-            {isLoggedIn ? <Manage /> : <Redirect to="/login" />}
+            {isLoggedIn || isLoading ? <Manage /> : <Redirect to="/login" />}
+          </Route>
+          <Route path="/badges">
+            {isLoggedIn || isLoading ? <Badges /> : <Redirect to="/login" />}
           </Route>
           <Route path="/register">
-            {!isLoggedIn ? <Register /> : <Redirect to="/manage" />}
+            {!isLoggedIn || isLoading ? (
+              <Register />
+            ) : (
+              <Redirect to="/manage" />
+            )}
           </Route>
           <Route path="/">
-            {!isLoggedIn ? (
+            {!isLoggedIn || isLoading ? (
               <Login onLoginSuccess={() => setIsLoggedIn(true)} />
             ) : (
               <Redirect to="/manage" />

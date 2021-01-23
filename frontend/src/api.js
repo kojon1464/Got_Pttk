@@ -18,3 +18,5 @@ export const changeStates = state =>
 
 export const confirmStates = state =>
   axios.post("/confirm-change", state, authHeader());
+
+export const getBadges = () => axios.get("/badges-to-collect", authHeader());

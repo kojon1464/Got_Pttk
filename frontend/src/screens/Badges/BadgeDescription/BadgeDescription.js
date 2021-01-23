@@ -4,6 +4,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {Button, Card, Typography, Divider} from "@material-ui/core";
 import * as api from "../../../api";
 import PointsCounting from "./PointsCounting";
+import ApplicationInfo from "./ApplicationInfo";
 
 const BadgeDescription = ({badgeId, onReturnRequest}) => {
   const classes = useStyles();
@@ -15,10 +16,10 @@ const BadgeDescription = ({badgeId, onReturnRequest}) => {
 
   console.log(badge);
 
+  if (!badge) return null;
+
   const hasEnoughPoints =
     badge.points + badge.pointsExcessive >= badge.rank.points;
-
-  if (!badge) return null;
 
   return (
     <div className={classes.root}>
@@ -48,10 +49,34 @@ const BadgeDescription = ({badgeId, onReturnRequest}) => {
           <Divider />
         </div>
 
-        <PointsCounting
-          userPoints={badge.points}
-          userPointsExcessive={badge.pointsExcessive}
-        />
+        <div style={{display: "flex", marginTop: 26}}>
+          <PointsCounting
+            userPoints={badge.points}
+            userPointsExcessive={badge.pointsExcessive}
+          />
+          {hasEnoughPoints && !badge.badgeApplication && (
+            <ApplicationInfo onSubmitRequest={() => true} />
+          )}
+        </div>
+
+        {!hasEnoughPoints && !badge.badgeApplication && (
+          <Typography
+            color="error"
+            variant="subtitle1"
+            style={{textAlign: "center", marginTop: 30}}
+          >
+            Niewystarczająca liczba punktów, aby złożyć podanie o odznakę!
+          </Typography>
+        )}
+
+        {hasEnoughPoints && !badge.badgeApplication && (
+          <Typography
+            variant="subtitle1"
+            style={{textAlign: "center", marginTop: 30, color: "#4CAF50"}}
+          >
+            Osiągnięto dostateczny próg punktowy, aby zdobyć odznakę!
+          </Typography>
+        )}
       </div>
     </div>
   );

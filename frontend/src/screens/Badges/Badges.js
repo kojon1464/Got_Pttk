@@ -3,6 +3,7 @@ import * as api from "../../api";
 import {Grid, Container} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import BadgeCard from "./BadgeCard";
+import BadgeDescription from "./BadgeDescription";
 
 const Badges = () => {
   const classes = useStyles();
@@ -12,17 +13,25 @@ const Badges = () => {
     api.getBadges().then(response => setBadges(response.data));
   }, []);
 
-  console.log(badges);
+  const [selectedBadge, setSelectedBadge] = useState(null);
 
   return (
     <Container className={classes.root} maxWidth="lg">
-      <Grid container spacing={2}>
-        {badges.map(badge => (
-          <Grid key={badge.id} item xs={4} md={3}>
-            <BadgeCard badge={badge} />
-          </Grid>
-        ))}
-      </Grid>
+      {!selectedBadge && (
+        <Grid container spacing={2}>
+          {badges.map(badge => (
+            <Grid key={badge.id} item xs={4} md={3}>
+              <BadgeCard badge={badge} onClick={setSelectedBadge} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
+      {selectedBadge && (
+        <BadgeDescription
+          badgeId={selectedBadge.id}
+          onReturnRequest={() => setSelectedBadge(null)}
+        />
+      )}
     </Container>
   );
 };

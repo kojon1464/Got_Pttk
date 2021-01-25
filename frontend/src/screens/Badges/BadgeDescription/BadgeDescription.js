@@ -43,8 +43,7 @@ const BadgeDescription = ({badgeId, onReturnRequest}) => {
     api
       .sendAddress(badgeId, address)
       .then(() => api.getBadge(badgeId))
-      .then(response => setBadge(response.data))
-      .catch(err => console.log({err}))
+      .then(response => {setBadge(response.data); onReturnRequest()})
       .catch(() => setIsErrorDialog(true));
 
   return (
@@ -91,12 +90,30 @@ const BadgeDescription = ({badgeId, onReturnRequest}) => {
                 <Typography>
                   Data rozpatrzenia: {badge.badgeApplication?.checkDate}
                 </Typography>
-                <Typography
-                  variant="subtitle1"
-                  style={{marginTop: 6, color: "#4CAF50"}}
-                >
-                  Status: Pozytywny!
-                </Typography>
+                {(badge.badgeApplication.checked && badge.badgeApplication.positive) && (
+                      <Typography
+                      variant="subtitle1"
+                      style={{marginTop: 6, color: "#4CAF50"}}
+                    >
+                      Status: Pozytywny!
+                    </Typography>
+                )}  
+                {(badge.badgeApplication.checked && !badge.badgeApplication.positive) && (
+                      <Typography
+                      variant="subtitle1"
+                      style={{marginTop: 6, color: "#B20000"}}
+                    >
+                      Status: Negatywny!
+                    </Typography>
+                )}  
+                {(!badge.badgeApplication.checked) && (
+                      <Typography
+                      variant="subtitle1"
+                      style={{marginTop: 6, color: "#FFA500"}}
+                    >
+                      Status: Niesprawdzono!
+                    </Typography>
+                )}  
               </div>
             )}
             {hasEnoughPoints && !badge.badgeApplication && (
@@ -105,7 +122,8 @@ const BadgeDescription = ({badgeId, onReturnRequest}) => {
 
             {hasEnoughPoints &&
               badge.badgeApplication &&
-              !badge.badgeApplication.address && (
+              !badge.badgeApplication.address && 
+              badge.badgeApplication.positive && (
                 <AddressForm onSubmit={sendAddress} />
               )}
           </div>
@@ -136,7 +154,7 @@ const BadgeDescription = ({badgeId, onReturnRequest}) => {
         <DialogTitle>Błąd</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Wystąpił błąd podczas przetwarzania zmian
+            Kod pocztowy nie znajduje się w polce (poprawny format 99-999)
           </DialogContentText>
         </DialogContent>
         <DialogActions>

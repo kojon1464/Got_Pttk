@@ -29,7 +29,7 @@ const Badges = () => {
       {selectedBadge && (
         <BadgeDescription
           badgeId={selectedBadge.id}
-          onReturnRequest={() => setSelectedBadge(null)}
+          onReturnRequest={() => {setSelectedBadge(null); api.getBadges().then(response => setBadges(response.data));}}
         />
       )}
     </Container>

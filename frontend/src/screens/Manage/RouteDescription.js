@@ -85,7 +85,10 @@ const RouteDescription = ({route, onCancelRequest}) => {
   };
   const handleConfirmationSubmit = () => {
     return api.confirmStates(stateToConfirm).then(response => {
-      setRouteStates(response.data);
+      api.getRouteStates(route.route.id).then(response => {
+        setRouteStates(response.data);
+        setSelectedState(null);
+      })
       setIsConfirmationDialog(false);
       setChangesResData(null);
       setStateToConfirm(null);
@@ -100,7 +103,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
       end: mapDateToString(endDate),
       pointsThere,
       pointsBack,
-      open: isOpened
+      open: isOpened,
     };
 
     setStateToConfirm(newState);
@@ -115,7 +118,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
       pointsThere,
       pointsBack,
       open: isOpened,
-      route
+      route: route.route
     };
 
     setStateToConfirm(newState);
@@ -124,7 +127,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
 
   if (!route) return null;
 
-  const renderedRows = routeStates.map(state => (
+  const renderedRows = routeStates.sort((a, b) => ('' + a.start).localeCompare(b.start)).map(state => (
     <TableRow
       key={state.id}
       className={selectedState === state ? classes.selectedStateRow : ""}
@@ -301,9 +304,9 @@ const mapStringToDate = text => {
 
 const mapDateToString = date => {
   const fixedMonth =
-    date.getMonth() < 10 ? `0${date.getMonth()}` : `${date.getMonth()}`;
+    date.getMonth()+1 < 10 ? `0${date.getMonth()+1}` : `${date.getMonth()+1}`;
   const fixedDate =
-    date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`;
+    date.getDate()+1 < 10 ? `0${date.getDate()+1}` : `${date.getDate()+1}`;
   return `${date.getFullYear()}-${fixedMonth}-${fixedDate}`;
 };
 

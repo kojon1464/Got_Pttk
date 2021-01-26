@@ -25,6 +25,7 @@ const NavBar = ({onLogoutRequest}) => {
             <Typography>Witaj, Filip (Turysta)</Typography>
           </div>
           <Button
+            id='logout'
             color="inherit"
             startIcon={<ExitToAppIcon />}
             onClick={onLogoutRequest}

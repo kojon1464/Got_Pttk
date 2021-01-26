@@ -100,15 +100,15 @@ public class GotPttkApiApplication implements CommandLineRunner {
 		tripRepository.save(trip);
 		
 		
-		Badge badge1 = new Badge(Kind.GREAT, "Great");
-		Badge badge2 = new Badge(Kind.SMALL, "Small");
+		Badge badge1 = new Badge(Kind.DUZA, "Great");
+		Badge badge2 = new Badge(Kind.MALA, "Small");
 		
 		badgeRepository.save(badge1);
 		badgeRepository.save(badge2);
 		
-		BadgeRank rank1 = new BadgeRank(Rank.SILVER, "silver", 0, true, badge1);
-		BadgeRank rank2 = new BadgeRank(Rank.GOLD, "Gold", 0, true, badge1);
-		BadgeRank rank3 = new BadgeRank(Rank.SILVER, "silver", 0, true, badge2);
+		BadgeRank rank1 = new BadgeRank(Rank.SREBRNA, "silver", 0, true, badge1);
+		BadgeRank rank2 = new BadgeRank(Rank.ZLOTA, "Gold", 0, true, badge1);
+		BadgeRank rank3 = new BadgeRank(Rank.SREBRNA, "silver", 0, true, badge2);
 		
 		badgeRankRepository.save(rank1);
 		badgeRankRepository.save(rank2);

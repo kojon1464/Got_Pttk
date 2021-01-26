@@ -27,16 +27,19 @@ const AddressForm = ({onSubmit}) => {
       <div className={classes.form}>
         <div className={classes.column} style={{marginRight: 50}}>
           <TextField
+            id='building'
             label="Numer budynku"
             value={formData.buildingNumber}
             onChange={handleChange("buildingNumber")}
           />
           <TextField
+          id='flat'
             label="Numer mieszkania"
             value={formData.flatNumber}
             onChange={handleChange("flatNumber")}
           />
           <TextField
+          id='street'
             label="Ulica"
             value={formData.street}
             onChange={handleChange("street")}
@@ -44,16 +47,19 @@ const AddressForm = ({onSubmit}) => {
         </div>
         <div className={classes.column}>
           <TextField
+          id='town'
             label="Miejscowość"
             value={formData.town}
             onChange={handleChange("town")}
           />
           <TextField
+          id='code'
             label="Kod pocztowy"
             value={formData.postalCode}
             onChange={handleChange("postalCode")}
           />
           <Button
+          id='confirm'
             color="primary"
             variant="contained"
             style={{marginTop: 18}}

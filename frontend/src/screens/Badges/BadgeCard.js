@@ -7,7 +7,7 @@ const BadgeCard = ({badge, onClick}) => {
   const classes = useStyles();
 
   return (
-    <Card className={classes.card} onClick={() => onClick && onClick(badge)}>
+    <Card id='badge' className={classes.card} onClick={() => onClick && onClick(badge)}>
       <img className={classes.medalImg} src={MedalImg} />
       <Typography className={classes.titles} variant="h6">
         {badge.badge.kind}

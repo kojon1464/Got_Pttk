@@ -129,6 +129,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
 
   const renderedRows = routeStates.sort((a, b) => ('' + a.start).localeCompare(b.start)).map(state => (
     <TableRow
+      id='row'
       key={state.id}
       className={selectedState === state ? classes.selectedStateRow : ""}
       style={{cursor: "pointer"}}
@@ -167,8 +168,8 @@ const RouteDescription = ({route, onCancelRequest}) => {
       </TableContainer>
 
       <div className={classes.actionButtons}>
-        <Button onClick={handleStateCreatorOpen}>Dodaj nowy stan</Button>
-        <Button onClick={handleStateEditorOpen} disabled={!selectedState}>
+        <Button id='add' onClick={handleStateCreatorOpen}>Dodaj nowy stan</Button>
+        <Button id='edit' onClick={handleStateEditorOpen} disabled={!selectedState}>
           Zmień wybrany
         </Button>
         <Button onClick={onCancelRequest}>Anuluj</Button>
@@ -183,6 +184,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
         <DialogContent className={classes.formContainer}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
+              id='dateStart'
               label="Data rozpoczęcia"
               disableToolbar
               variant="inline"
@@ -194,6 +196,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
           </MuiPickersUtilsProvider>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
+              id='dateEnd'
               label="Data zakończenia"
               disableToolbar
               variant="inline"
@@ -204,12 +207,14 @@ const RouteDescription = ({route, onCancelRequest}) => {
             />
           </MuiPickersUtilsProvider>
           <TextField
+            id='pointsThere'
             label="Punkty tam"
             type="number"
             value={pointsThere}
             onChange={event => setPointsThere(event.target.value)}
           />
           <TextField
+            id='pointsBack'
             label="Punkty powrót"
             type="number"
             value={pointsBack}
@@ -225,6 +230,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
         </DialogContent>
         <DialogActions>
           <Button
+            id='ok'
             onClick={selectedState ? confirmStateEdit : confirmStateCreate}
             color="primary"
           >
@@ -244,7 +250,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={() => setIsErrorDialog(false)}>
+          <Button id='closeError' color="primary" onClick={() => setIsErrorDialog(false)}>
             OK
           </Button>
         </DialogActions>
@@ -287,7 +293,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={handleConfirmationSubmit}>
+          <Button id='confirm' color="primary" onClick={handleConfirmationSubmit}>
             Potwierdź
           </Button>
           <Button onClick={() => setIsConfirmationDialog(false)}>Anuluj</Button>

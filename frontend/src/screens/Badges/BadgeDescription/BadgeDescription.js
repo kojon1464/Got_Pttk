@@ -158,7 +158,7 @@ const BadgeDescription = ({badgeId, onReturnRequest}) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={() => setIsErrorDialog(false)}>
+          <Button id='error' color="primary" onClick={() => setIsErrorDialog(false)}>
             OK
           </Button>
         </DialogActions>

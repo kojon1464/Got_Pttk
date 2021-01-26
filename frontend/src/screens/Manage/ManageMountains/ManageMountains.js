@@ -12,7 +12,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import ManageContainer from "../../../components/ManageContainer";
 import {makeStyles} from "@material-ui/core/styles";
 
-const mountains = ["Kurwa", "Jebana", "Mać"];
+const mountains = ["f", "sd", "fs"];
 
 const ManageMountains = () => {
   const classes = useStyles();

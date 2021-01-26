@@ -32,6 +32,7 @@ const Login = ({onLoginSuccess}) => {
       }
     >
       <TextField
+        id="email"
         label="Adres email"
         variant="outlined"
         className={classes.input}
@@ -39,6 +40,7 @@ const Login = ({onLoginSuccess}) => {
         onChange={event => setEmail(event.target.value)}
       />
       <TextField
+        id="password"
         type="password"
         label="Hasło"
         variant="outlined"
@@ -47,6 +49,7 @@ const Login = ({onLoginSuccess}) => {
         onChange={event => setPassword(event.target.value)}
       />
       <Button
+        id='button'
         variant="contained"
         color="primary"
         className={classes.submitButton}

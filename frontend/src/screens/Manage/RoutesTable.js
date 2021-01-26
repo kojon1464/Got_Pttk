@@ -20,7 +20,7 @@ const RoutesTable = ({routes, onModifyRequest}) => {
       <TableCell>{route.currentState?.pointsThere}</TableCell>
       <TableCell>{route.currentState?.pointsBack}</TableCell>
       <TableCell>
-        <Button onClick={() => onModifyRequest(route)}>Modyfikuj</Button>
+        <Button id='modify' onClick={() => onModifyRequest(route)}>Modyfikuj</Button>
         <IconButton>
           <DeleteIcon />
         </IconButton>

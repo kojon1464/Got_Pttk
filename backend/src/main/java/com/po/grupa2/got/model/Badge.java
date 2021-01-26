@@ -71,6 +71,6 @@ public class Badge {
 	}
 
 	public static enum Kind {
-		IN_THE_MOUNTAINS, POPULAR, SMALL, GREAT, FOR_PERSISTENCE
+		W_GORY, POPULARNA, MALA, DUZA, ZA_WYTRWALOSC
 	}
 }

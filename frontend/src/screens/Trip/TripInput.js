@@ -30,7 +30,7 @@ const TripInput = ({
           disabled={!!selectedItem}
           fullWidth
         />
-        {wasFocused && !selectedItem && filteredItems.length && (
+        {wasFocused && !selectedItem && !!filteredItems.length && (
           <Card className={classes.hintsList}>
             {filteredItems.map(item => (
               <button

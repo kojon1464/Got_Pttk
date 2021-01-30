@@ -36,3 +36,7 @@ export const sendAddress = (badgeId, address) =>
 export const getTrips = () => axios.get("/trips", authHeader());
 
 export const getLocalizations = () => axios.get("/localizations", authHeader());
+
+export const saveTrip = trip => axios.post("/save-trip", trip, authHeader());
+
+export const countPoints = trip => axios.post("/points", trip, authHeader());

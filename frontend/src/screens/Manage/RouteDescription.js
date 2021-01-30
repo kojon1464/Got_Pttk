@@ -88,7 +88,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
       api.getRouteStates(route.route.id).then(response => {
         setRouteStates(response.data);
         setSelectedState(null);
-      })
+      });
       setIsConfirmationDialog(false);
       setChangesResData(null);
       setStateToConfirm(null);
@@ -103,7 +103,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
       end: mapDateToString(endDate),
       pointsThere,
       pointsBack,
-      open: isOpened,
+      open: isOpened
     };
 
     setStateToConfirm(newState);
@@ -127,21 +127,23 @@ const RouteDescription = ({route, onCancelRequest}) => {
 
   if (!route) return null;
 
-  const renderedRows = routeStates.sort((a, b) => ('' + a.start).localeCompare(b.start)).map(state => (
-    <TableRow
-      id='row'
-      key={state.id}
-      className={selectedState === state ? classes.selectedStateRow : ""}
-      style={{cursor: "pointer"}}
-      onClick={() => setSelectedState(state)}
-    >
-      <TableCell>{state.start.substring(0, 10)}</TableCell>
-      <TableCell>{state.end.substring(0, 10)}</TableCell>
-      <TableCell>{state.pointsThere}</TableCell>
-      <TableCell>{state.pointsBack}</TableCell>
-      <TableCell>{state.open ? "tak" : "nie"}</TableCell>
-    </TableRow>
-  ));
+  const renderedRows = routeStates
+    .sort((a, b) => ("" + a.start).localeCompare(b.start))
+    .map(state => (
+      <TableRow
+        id="row"
+        key={state.id}
+        className={selectedState === state ? classes.selectedStateRow : ""}
+        style={{cursor: "pointer"}}
+        onClick={() => setSelectedState(state)}
+      >
+        <TableCell>{state.start.substring(0, 10)}</TableCell>
+        <TableCell>{state.end.substring(0, 10)}</TableCell>
+        <TableCell>{state.pointsThere}</TableCell>
+        <TableCell>{state.pointsBack}</TableCell>
+        <TableCell>{state.open ? "tak" : "nie"}</TableCell>
+      </TableRow>
+    ));
 
   return (
     <>
@@ -168,8 +170,14 @@ const RouteDescription = ({route, onCancelRequest}) => {
       </TableContainer>
 
       <div className={classes.actionButtons}>
-        <Button id='add' onClick={handleStateCreatorOpen}>Dodaj nowy stan</Button>
-        <Button id='edit' onClick={handleStateEditorOpen} disabled={!selectedState}>
+        <Button id="add" onClick={handleStateCreatorOpen}>
+          Dodaj nowy stan
+        </Button>
+        <Button
+          id="edit"
+          onClick={handleStateEditorOpen}
+          disabled={!selectedState}
+        >
           Zmień wybrany
         </Button>
         <Button onClick={onCancelRequest}>Anuluj</Button>
@@ -184,7 +192,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
         <DialogContent className={classes.formContainer}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
-              id='dateStart'
+              id="dateStart"
               label="Data rozpoczęcia"
               disableToolbar
               variant="inline"
@@ -196,7 +204,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
           </MuiPickersUtilsProvider>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
-              id='dateEnd'
+              id="dateEnd"
               label="Data zakończenia"
               disableToolbar
               variant="inline"
@@ -207,14 +215,14 @@ const RouteDescription = ({route, onCancelRequest}) => {
             />
           </MuiPickersUtilsProvider>
           <TextField
-            id='pointsThere'
+            id="pointsThere"
             label="Punkty tam"
             type="number"
             value={pointsThere}
             onChange={event => setPointsThere(event.target.value)}
           />
           <TextField
-            id='pointsBack'
+            id="pointsBack"
             label="Punkty powrót"
             type="number"
             value={pointsBack}
@@ -230,7 +238,7 @@ const RouteDescription = ({route, onCancelRequest}) => {
         </DialogContent>
         <DialogActions>
           <Button
-            id='ok'
+            id="ok"
             onClick={selectedState ? confirmStateEdit : confirmStateCreate}
             color="primary"
           >
@@ -250,7 +258,11 @@ const RouteDescription = ({route, onCancelRequest}) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button id='closeError' color="primary" onClick={() => setIsErrorDialog(false)}>
+          <Button
+            id="closeError"
+            color="primary"
+            onClick={() => setIsErrorDialog(false)}
+          >
             OK
           </Button>
         </DialogActions>
@@ -293,7 +305,11 @@ const RouteDescription = ({route, onCancelRequest}) => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button id='confirm' color="primary" onClick={handleConfirmationSubmit}>
+          <Button
+            id="confirm"
+            color="primary"
+            onClick={handleConfirmationSubmit}
+          >
             Potwierdź
           </Button>
           <Button onClick={() => setIsConfirmationDialog(false)}>Anuluj</Button>
@@ -303,14 +319,16 @@ const RouteDescription = ({route, onCancelRequest}) => {
   );
 };
 
-const mapStringToDate = text => {
+export const mapStringToDate = text => {
   const values = text.substring(0, 10).split("-").map(Number);
   return new Date(values[0], values[1] - 1, values[2]);
 };
 
-const mapDateToString = date => {
+export const mapDateToString = date => {
   const fixedMonth =
-    date.getMonth()+1 < 10 ? `0${date.getMonth()+1}` : `${date.getMonth()+1}`;
+    date.getMonth() + 1 < 10
+      ? `0${date.getMonth() + 1}`
+      : `${date.getMonth() + 1}`;
   const fixedDate =
     date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`;
   return `${date.getFullYear()}-${fixedMonth}-${fixedDate}`;

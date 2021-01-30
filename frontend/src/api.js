@@ -29,3 +29,5 @@ export const sendApplication = badgeId =>
 
 export const sendAddress = (badgeId, address) =>
   axios.post("/address", {rank: {id: badgeId}, address}, authHeader());
+
+export const getTrips = () => axios.get("/trips", authHeader());

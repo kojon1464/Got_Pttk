@@ -13,8 +13,12 @@ const TripsList = ({trips}) => {
         Twoje wycieczki
       </Typography>
       {trips.map(trip => (
-        <Link className={classes.tripButton} onClick={preventDefault}>
-          {trip}
+        <Link
+          key={trip.name}
+          className={classes.tripButton}
+          onClick={preventDefault}
+        >
+          {trip.name}
         </Link>
       ))}
     </div>

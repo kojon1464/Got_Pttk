@@ -1,14 +1,20 @@
 import {makeStyles} from "@material-ui/core/styles";
+import React, {useState, useEffect} from "react";
 import {Container} from "@material-ui/core";
 import TripsList from "./TripsList";
-import React from "react";
+import * as api from "../../api";
 
 const Trip = () => {
   const classes = useStyles();
 
+  const [trips, setTrips] = useState([]);
+  useEffect(() => {
+    api.getTrips().then(res => setTrips(res.data));
+  }, []);
+
   return (
     <Container className={classes.root} maxWidth="lg">
-      <TripsList trips={["Kurwa"]} />
+      <TripsList trips={trips} />
       <div>wefw</div>
     </Container>
   );

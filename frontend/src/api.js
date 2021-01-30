@@ -10,6 +10,9 @@ export const logout = () => localStorage.setItem("auth", null);
 
 export const getRoutes = () => axios.get("/routes", authHeader());
 
+export const getMatchingRoutes = endId =>
+  axios.get("/routes", {...authHeader(), params: {id: endId}});
+
 export const getRouteStates = routeId =>
   axios.get("/states", {params: {route_id: routeId}, ...authHeader()});
 
@@ -31,3 +34,5 @@ export const sendAddress = (badgeId, address) =>
   axios.post("/address", {rank: {id: badgeId}, address}, authHeader());
 
 export const getTrips = () => axios.get("/trips", authHeader());
+
+export const getLocalizations = () => axios.get("/localizations", authHeader());

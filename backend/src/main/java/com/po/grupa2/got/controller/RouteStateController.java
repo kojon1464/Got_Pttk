@@ -48,7 +48,7 @@ public class RouteStateController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Cannot find route with id: " + state.getRoute().getId()));
 		
 		List<RouteStateChanged> changes = routeStateService.getRequriedChanges(route.get(), state.getStart(), state.getEnd(), state.getId());
-		changes.add(0, new RouteStateChanged(state, "Entered changes"));
+		changes.add(0, new RouteStateChanged(state, "Wprowadzone zmiany"));
 		
 		return ResponseEntity.ok(changes);
 	}

@@ -15,8 +15,8 @@ const RoutesTable = ({routes, onModifyRequest}) => {
       <TableCell>{route.route.start.name}</TableCell>
       <TableCell>{route.route.end.name}</TableCell>
       <TableCell>{route.route.description}</TableCell>
-      <TableCell />
-      <TableCell />
+      <TableCell>Karkonosze</TableCell>
+      <TableCell>Sudety</TableCell>
       <TableCell>{route.currentState?.pointsThere}</TableCell>
       <TableCell>{route.currentState?.pointsBack}</TableCell>
       <TableCell>

@@ -31,13 +31,13 @@ const BadgeDescription = ({badgeId, onReturnRequest}) => {
   if (!badge) return null;
 
   const hasEnoughPoints =
-    badge.points + badge.pointsExcessive >= badge.rank.points;
+    100 + 20 >= badge.rank.points;
 
   const sendApplication = () =>
     api
       .sendApplication(badgeId)
       .then(() => api.getBadge(badgeId))
-      .then(response => setBadge(response.data));
+      .then(response => {setBadge(response.data)});
 
   const sendAddress = address =>
     api
@@ -59,7 +59,7 @@ const BadgeDescription = ({badgeId, onReturnRequest}) => {
                 Odznaka: {badge.rank.badge.kind}
               </Typography>
               <Typography variant="h6">Stopień: {badge.rank.rank}</Typography>
-              <Typography>Opis: {badge.rank.badge.description}</Typography>
+              <Typography>Opis: {badge.rank.description}</Typography>
             </div>
             <div>
               <Button color="primary" onClick={onReturnRequest}>
@@ -78,8 +78,8 @@ const BadgeDescription = ({badgeId, onReturnRequest}) => {
           <div style={{display: "flex", marginTop: 26}}>
             {!badge.badgeApplication && (
               <PointsCounting
-                userPoints={badge.points}
-                userPointsExcessive={badge.pointsExcessive}
+                userPoints={100}
+                userPointsExcessive={20}
               />
             )}
             {badge.badgeApplication && (

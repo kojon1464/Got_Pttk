@@ -111,6 +111,6 @@ public class BadgeRank {
 	}
 
 	public static enum Rank {
-		BRONZOWA, SREBRNA, ZLOTA, POPULARNA
+		BRAZOWA, SREBRNA, ZLOTA, POPULARNA
 	}
 }

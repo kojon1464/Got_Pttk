@@ -15,10 +15,10 @@ import com.po.grupa2.got.repository.RouteStateRepository;
 @Service
 public class RouteStateService {
 	
-	private static final String START_CHANGED = "Start date change";
-	private static final String END_CHANGED = "End date change";
-	private static final String REMOVED = "Removed";
-	private static final String SPLITED = "Splited into two states";
+	private static final String START_CHANGED = "Data startu zmieniona";
+	private static final String END_CHANGED = "Data końca zmieniona";
+	private static final String REMOVED = "Usunięto";
+	private static final String SPLITED = "Podzielono na dwa stany";
 	
 	private static final long DAY_IN_MILIS = 24*60*60*1000;
 	
@@ -60,7 +60,7 @@ public class RouteStateService {
 			if(state.getId() == state_id)
 				continue;
 			
-			if(state.getStart().after(previuysDay(start)) && state.getStart().before(nextDay(end))) {
+			if(state.getStart().after(previuysDay(start)) && state.getStart().before(end)) {
 				if(state.getEnd() == null || state.getEnd().after(end))
 					changes.add(new RouteStateChanged(state, START_CHANGED));
 				else

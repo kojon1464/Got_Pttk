@@ -22,7 +22,7 @@ const NavBar = ({onLogoutRequest}) => {
 
           <div className={classes.userContainer}>
             <PersonIcon className={classes.icon} />
-            <Typography>Witaj, Filip (Turysta)</Typography>
+            <Typography>Witaj, Filip</Typography>
           </div>
           <Button
             id='logout'

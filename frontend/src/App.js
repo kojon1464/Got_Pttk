@@ -33,7 +33,6 @@ function App() {
   return (
     <Router>
       {(isLoggedIn || isLoading) && <NavBar onLogoutRequest={logout} />}
-      <NavBar onLogoutRequest={logout} />
       <div className={classes.root}>
         <Switch>
           <Route path="/manage">
@@ -43,8 +42,7 @@ function App() {
             {isLoggedIn || isLoading ? <Badges /> : <Redirect to="/login" />}
           </Route>
           <Route path="/trip">
-            <Trip />
-            {/*{isLoggedIn || isLoading ? <Trip /> : <Redirect to="/login" />}*/}
+            {isLoggedIn || isLoading ? <Trip /> : <Redirect to="/login" />}
           </Route>
           <Route path="/register">
             {!isLoggedIn || isLoading ? (
